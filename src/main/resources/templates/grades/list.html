@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Notlar</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments :: topbar('grades')}"></div>
+
+<div class="container">
+    <div class="page-header">
+        <div>
+            <h1>Notlar</h1>
+            <div class="subtitle">Vize %40 + Final %60 üzerinden hesaplanır</div>
+        </div>
+        <a class="btn btn-gold" th:href="@{/grades/new}">+ Not Gir</a>
+    </div>
+
+    <table class="ledger" th:if="${not #lists.isEmpty(grades)}">
+        <thead>
+        <tr>
+            <th>Öğrenci</th>
+            <th>Ders</th>
+            <th>Vize</th>
+            <th>Final</th>
+            <th>Ortalama</th>
+            <th>Harf Notu</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="g : ${grades}">
+            <td th:text="${g.student.name + ' ' + g.student.surname}">Ad Soyad</td>
+            <td th:text="${g.course.courseName}">Ders</td>
+            <td th:text="${g.midterm}">70</td>
+            <td th:text="${g.finalExam}">80</td>
+            <td th:text="${#numbers.formatDecimal(g.calculateAverage(), 1, 1)}">76.0</td>
+            <td>
+                <span class="badge"
+                      th:classappend="${g.letterGrade == 'KALDI'} ? 'badge-red' : 'badge-teal'"
+                      th:text="${g.letterGrade}">BB</span>
+            </td>
+            <td class="actions">
+                <a class="btn btn-outline btn-sm" th:href="@{/grades/edit/{id}(id=${g.id})}">Düzenle</a>
+                <a class="btn btn-danger btn-sm" th:href="@{/grades/delete/{id}(id=${g.id})}"
+                   onclick="return confirm('Not silinsin mi?');">Sil</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="empty-state" th:if="${#lists.isEmpty(grades)}">
+        <div class="glyph">—</div>
+        Henüz not girilmemiş. "Not Gir" ile başlayın.
+    </div>
+</div>
+</body>
+</html>

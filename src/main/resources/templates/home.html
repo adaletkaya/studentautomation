@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Öğrenci Otomasyonu</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments :: topbar('home')}"></div>
+
+<div class="container">
+    <div class="page-header">
+        <div>
+            <h1>Kontrol Paneli</h1>
+            <div class="subtitle">Öğrenci, öğretmen, ders ve not kayıtlarına genel bakış</div>
+        </div>
+    </div>
+
+    <div class="stat-grid">
+        <div class="stat-card">
+            <div class="num" th:text="${studentCount}">0</div>
+            <div class="label">Öğrenci</div>
+        </div>
+        <div class="stat-card">
+            <div class="num" th:text="${teacherCount}">0</div>
+            <div class="label">Öğretmen</div>
+        </div>
+        <div class="stat-card">
+            <div class="num" th:text="${courseCount}">0</div>
+            <div class="label">Ders</div>
+        </div>
+        <div class="stat-card">
+            <div class="num" th:text="${gradeCount}">0</div>
+            <div class="label">Not Kaydı</div>
+        </div>
+    </div>
+
+    <h2 style="font-size:1.1rem; margin-bottom:14px;">Hızlı Erişim</h2>
+    <div class="quick-links">
+        <a class="quick-link" th:href="@{/students/new}">
+            <span class="qtitle">+ Öğrenci Ekle</span>
+            <span class="qdesc">Yeni öğrenci kaydı oluştur</span>
+        </a>
+        <a class="quick-link" th:href="@{/teachers/new}">
+            <span class="qtitle">+ Öğretmen Ekle</span>
+            <span class="qdesc">Yeni öğretmen kaydı oluştur</span>
+        </a>
+        <a class="quick-link" th:href="@{/courses/new}">
+            <span class="qtitle">+ Ders Ekle</span>
+            <span class="qdesc">Yeni ders tanımla</span>
+        </a>
+        <a class="quick-link" th:href="@{/grades/new}">
+            <span class="qtitle">+ Not Gir</span>
+            <span class="qdesc">Vize / final notu ekle</span>
+        </a>
+    </div>
+</div>
+</body>
+</html>

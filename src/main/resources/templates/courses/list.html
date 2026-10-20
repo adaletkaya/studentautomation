@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dersler</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments :: topbar('courses')}"></div>
+
+<div class="container">
+    <div class="page-header">
+        <div>
+            <h1>Dersler</h1>
+            <div class="subtitle">Tüm ders kayıtları</div>
+        </div>
+        <a class="btn btn-gold" th:href="@{/courses/new}">+ Ders Ekle</a>
+    </div>
+
+    <table class="ledger" th:if="${not #lists.isEmpty(courses)}">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Ders Adı</th>
+            <th>Kredi</th>
+            <th>Öğretmen</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="c : ${courses}">
+            <td th:text="${c.courseId}">1</td>
+            <td><a th:href="@{/courses/{id}(id=${c.courseId})}" th:text="${c.courseName}">Ders</a></td>
+            <td th:text="${c.credit}">3</td>
+            <td th:text="${c.teacher != null ? c.teacher.name + ' ' + c.teacher.surname : 'Atanmadı'}">Öğretmen</td>
+            <td class="actions">
+                <a class="btn btn-outline btn-sm" th:href="@{/courses/edit/{id}(id=${c.courseId})}">Düzenle</a>
+                <a class="btn btn-danger btn-sm" th:href="@{/courses/delete/{id}(id=${c.courseId})}"
+                   onclick="return confirm('Ders silinsin mi?');">Sil</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="empty-state" th:if="${#lists.isEmpty(courses)}">
+        <div class="glyph">—</div>
+        Henüz kayıtlı ders yok. "Ders Ekle" ile başlayın.
+    </div>
+</div>
+</body>
+</html>

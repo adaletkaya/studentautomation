@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${course.courseName}">Ders Detayı</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments :: topbar('courses')}"></div>
+
+<div class="container">
+    <div class="page-header">
+        <div>
+            <h1 th:text="${course.courseName}">Ders Adı</h1>
+            <div class="subtitle">
+                Kredi: <span th:text="${course.credit}">3</span> ·
+                Öğretmen: <span th:text="${course.teacher != null ? course.teacher.name + ' ' + course.teacher.surname : 'Atanmadı'}">-</span>
+            </div>
+        </div>
+        <a class="btn btn-outline" th:href="@{/courses}">← Derslere Dön</a>
+    </div>
+
+    <h2 style="font-size:1.05rem; margin-bottom:12px;">Kayıtlı Öğrenciler</h2>
+
+    <div class="form-card" style="margin-bottom:24px;">
+        <form th:action="@{/courses/{id}/enroll(id=${course.courseId})}" method="post" style="display:flex; gap:10px; align-items:end;">
+            <div class="form-group" style="flex:1; margin-bottom:0;">
+                <label>Öğrenci Seç</label>
+                <select name="studentNumber" required>
+                    <option th:each="s : ${allStudents}" th:value="${s.studentNumber}"
+                            th:text="${s.name + ' ' + s.surname + ' (' + s.studentNumber + ')'}">Öğrenci</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-gold">Derse Kaydet</button>
+        </form>
+    </div>
+
+    <table class="ledger" th:if="${not #lists.isEmpty(enrollments)}" style="margin-bottom:32px;">
+        <thead>
+        <tr>
+            <th>Öğrenci No</th>
+            <th>Ad Soyad</th>
+            <th>Devamsızlık</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="e : ${enrollments}">
+            <td th:text="${e.student.studentNumber}">1001</td>
+            <td th:text="${e.student.name + ' ' + e.student.surname}">Ad Soyad</td>
+            <td>
+                <span class="badge badge-red"
+                      th:text="${(absenceByStudent.get(e.student.studentNumber) ?: 0)} + ' devamsızlık'">0 devamsızlık</span>
+            </td>
+            <td class="actions">
+                <form th:action="@{/courses/{id}/absence(id=${course.courseId})}" method="post" style="display:inline;">
+                    <input type="hidden" name="studentNumber" th:value="${e.student.studentNumber}">
+                    <button type="submit" class="btn btn-outline btn-sm">+ Devamsızlık Ekle</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="empty-state" th:if="${#lists.isEmpty(enrollments)}">
+        <div class="glyph">—</div>
+        Bu derse kayıtlı öğrenci yok.
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Öğrenciler</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments :: topbar('students')}"></div>
+
+<div class="container">
+    <div class="page-header">
+        <div>
+            <h1>Öğrenciler</h1>
+            <div class="subtitle">Tüm öğrenci kayıtları</div>
+        </div>
+        <a class="btn btn-gold" th:href="@{/students/new}">+ Öğrenci Ekle</a>
+    </div>
+
+    <table class="ledger" th:if="${not #lists.isEmpty(students)}">
+        <thead>
+        <tr>
+            <th>No</th>
+            <th>Ad Soyad</th>
+            <th>Bölüm</th>
+            <th>Sınıf</th>
+            <th>GPA</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="s : ${students}">
+            <td th:text="${s.studentNumber}">1001</td>
+            <td th:text="${s.name + ' ' + s.surname}">Ad Soyad</td>
+            <td th:text="${s.department}">Bölüm</td>
+            <td th:text="${s.gradeLevel}">1</td>
+            <td><span class="badge badge-gold" th:text="${s.gpa}">0.0</span></td>
+            <td class="actions">
+                <a class="btn btn-outline btn-sm" th:href="@{/students/edit/{no}(no=${s.studentNumber})}">Düzenle</a>
+                <a class="btn btn-danger btn-sm" th:href="@{/students/delete/{no}(no=${s.studentNumber})}"
+                   onclick="return confirm('Öğrenci silinsin mi?');">Sil</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="empty-state" th:if="${#lists.isEmpty(students)}">
+        <div class="glyph">—</div>
+        Henüz kayıtlı öğrenci yok. "Öğrenci Ekle" ile başlayın.
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="topbar(active)" class="topbar">
+    <a class="brand" th:href="@{/}">
+        <span class="seal">ÖO</span>
+        Öğrenci Otomasyonu
+    </a>
+    <nav>
+        <a th:href="@{/}" th:classappend="${active == 'home'} ? 'active' : ''">Panel</a>
+        <a th:href="@{/students}" th:classappend="${active == 'students'} ? 'active' : ''">Öğrenciler</a>
+        <a th:href="@{/teachers}" th:classappend="${active == 'teachers'} ? 'active' : ''">Öğretmenler</a>
+        <a th:href="@{/courses}" th:classappend="${active == 'courses'} ? 'active' : ''">Dersler</a>
+        <a th:href="@{/grades}" th:classappend="${active == 'grades'} ? 'active' : ''">Notlar</a>
+    </nav>
+</div>
+</body>
+</html>

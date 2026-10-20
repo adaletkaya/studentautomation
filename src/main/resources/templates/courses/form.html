@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ders Formu</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments :: topbar('courses')}"></div>
+
+<div class="container">
+    <div class="page-header">
+        <div>
+            <h1 th:text="${isEdit} ? 'Ders Düzenle' : 'Ders Ekle'">Ders Ekle</h1>
+        </div>
+    </div>
+
+    <div class="form-card">
+        <form th:action="${isEdit} ? @{/courses/edit/{id}(id=${course.courseId})} : @{/courses}"
+              th:object="${course}" method="post">
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Ders ID</label>
+                    <input type="number" th:field="*{courseId}" th:readonly="${isEdit}" required>
+                </div>
+                <div class="form-group">
+                    <label>Kredi</label>
+                    <input type="number" th:field="*{credit}" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Ders Adı</label>
+                <input type="text" th:field="*{courseName}" required>
+            </div>
+
+            <div class="form-group">
+                <label>Öğretmen</label>
+                <select name="teacherNumber">
+                    <option value="">Atanmadı</option>
+                    <option th:each="t : ${teachers}"
+                            th:value="${t.teacherNumber}"
+                            th:text="${t.name + ' ' + t.surname + ' (' + t.branch + ')'}"
+                            th:selected="${course.teacher != null and course.teacher.teacherNumber == t.teacherNumber}">
+                        Öğretmen
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Kaydet</button>
+                <a class="btn btn-outline" th:href="@{/courses}">İptal</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

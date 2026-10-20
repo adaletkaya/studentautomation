@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Not Formu</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments :: topbar('grades')}"></div>
+
+<div class="container">
+    <div class="page-header">
+        <div>
+            <h1 th:text="${isEdit} ? 'Not Düzenle' : 'Not Gir'">Not Gir</h1>
+        </div>
+    </div>
+
+    <div class="form-card">
+        <form th:action="${isEdit} ? @{/grades/edit/{id}(id=${grade.id})} : @{/grades}" method="post">
+
+            <div class="form-group">
+                <label>Öğrenci</label>
+                <select name="studentNumber" required>
+                    <option th:each="s : ${students}" th:value="${s.studentNumber}"
+                            th:text="${s.name + ' ' + s.surname + ' (' + s.studentNumber + ')'}"
+                            th:selected="${grade != null and grade.student != null and grade.student.studentNumber == s.studentNumber}">
+                        Öğrenci
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Ders</label>
+                <select name="courseId" required>
+                    <option th:each="c : ${courses}" th:value="${c.courseId}"
+                            th:text="${c.courseName}"
+                            th:selected="${grade != null and grade.course != null and grade.course.courseId == c.courseId}">
+                        Ders
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Vize</label>
+                    <input type="number" step="0.01" min="0" max="100" name="midterm"
+                           th:value="${grade != null ? grade.midterm : ''}" required>
+                </div>
+                <div class="form-group">
+                    <label>Final</label>
+                    <input type="number" step="0.01" min="0" max="100" name="finalExam"
+                           th:value="${grade != null ? grade.finalExam : ''}" required>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Kaydet</button>
+                <a class="btn btn-outline" th:href="@{/grades}">İptal</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
